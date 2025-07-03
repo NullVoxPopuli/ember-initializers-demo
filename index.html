@@ -12,7 +12,27 @@
       import Application from '#app/app.ts';
       import environment from '#app/config.ts';
 
-      Application.create(environment.APP);
+      let app = Application.create({
+        ...environment.APP,
+        autoboot: false,
+      });
+
+      // anything running here with access to `app`
+      // is equivelent to classic "initializers"
+      //
+      // These can be awaited, which was not possible before
+      console.log(app);
+
+      await app.boot();
+      let instance = await app.buildInstance();
+      await instance.boot();
+      await instance.visit('/');
+
+      // anything running here with access to `instance`
+      // is equivelent to classic "instance initializers"
+      //
+      // These can be awaited, which was not possible before
+      console.log(instance);
     </script>
   </body>
 </html>
